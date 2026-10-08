@@ -103,7 +103,7 @@ const invoiceSchema = z.object({
             enabled: z.boolean(),
         })
     ),
-    selectedBank: z.enum(["none", "mellat", "saderat", "melli"]).default("none"),
+    selectedBank: z.enum(["none", "mellat", "saderat", "melli", "asam", "tavangar", "saman"]).default("none"),
     customNotes: z.string().optional(),
 });
 
@@ -256,7 +256,7 @@ export default function InvoicePage() {
         alert(`فاکتور شماره ${data.invoiceNumber} ذخیره شد.`);
     };
 
-    const [selectedHeader, setSelectedHeader] = useState<"header1" | "header2">("header1");
+    const [selectedHeader, setSelectedHeader] = useState<"header1" | "header2" | "header3" | "header4">("header1");
 
     return (
         <div className="min-h-screen bg-white p-8 flex flex-col items-center font-sans print:dir-rtl" dir="rtl">
@@ -283,6 +283,28 @@ export default function InvoicePage() {
                 />
                 هدر پنکه
             </label>
+
+            <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                type="radio"
+                name="header"
+                value="header3"
+                checked={selectedHeader === "header3"}
+                onChange={() => setSelectedHeader("header3")}
+                />
+                هدر توانگر
+            </label>
+
+            <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                type="radio"
+                name="header"
+                value="header4"
+                checked={selectedHeader === "header4"}
+                onChange={() => setSelectedHeader("header4")}
+                />
+                هدر آسام
+            </label>
         </div>
 
             {/* هدر کنترل پنل */}
@@ -308,8 +330,12 @@ export default function InvoicePage() {
                     <div className="print-header">
                     {selectedHeader === "header1" ? (
                         <img src="/alborz_head.svg" className="mx-auto" />
-                    ) : (
+                    ) : selectedHeader === "header2" ? (
                         <img src="/pankeh_head.svg" className="mx-auto" />
+                    ) : selectedHeader === "header3" ? (
+                        <img src="/tavangar_head.svg" className="mx-auto" />
+                    ) : (
+                        <img src="/asam_head.svg" className="mx-auto" />
                     )}
                     </div>
 
@@ -591,7 +617,7 @@ export default function InvoicePage() {
                                     <div className="print:hidden mb-2">
                                         <RadioGroup
                                             defaultValue="none"
-                                            onValueChange={(val: "none" | "mellat" | "saderat" | "mellat2" | "melli") => setValue("selectedBank", val)}
+                                            onValueChange={(val: "none" | "mellat" | "saderat" | "mellat2" | "melli" | "asam" | "tavangar" | "saman") => setValue("selectedBank", val as "none" | "mellat" | "saderat" | "melli" | "asam" | "tavangar" | "saman")}
                                             className="flex gap-4 -mt-6 mb-3 items-end justify-end"
                                         >
                                             <div className="flex items-center space-x-2 space-x-reverse">
@@ -600,15 +626,27 @@ export default function InvoicePage() {
                                             </div>
                                             <div className="flex items-center space-x-2 space-x-reverse">
                                                 <RadioGroupItem value="mellat" id="r2" />
-                                                <Label htmlFor="r2">بانک ملت</Label>
+                                                <Label htmlFor="r2">بانک ملت البرز برج</Label>
                                             </div>
                                             <div className="flex items-center space-x-2 space-x-reverse">
                                                 <RadioGroupItem value="saderat" id="r3" />
-                                                <Label htmlFor="r3">بانک صادرات</Label>
+                                                <Label htmlFor="r3">بانک صادرات البرز برج</Label>
                                             </div>                                            
                                             <div className="flex items-center space-x-2 space-x-reverse">
                                                 <RadioGroupItem value="melli" id="r5" />
                                                 <Label htmlFor="r5">بانک ملی سجادی</Label>
+                                            </div>
+                                            <div className="flex items-center space-x-2 space-x-reverse">
+                                                <RadioGroupItem value="asam" id="r6" />
+                                                <Label htmlFor="r6">بانک صادرات آسام</Label>
+                                            </div>
+                                            <div className="flex items-center space-x-2 space-x-reverse">
+                                                <RadioGroupItem value="tavangar" id="r7" />
+                                                <Label htmlFor="r7">بانک صادرات توانگر</Label>
+                                            </div>
+                                            <div className="flex items-center space-x-2 space-x-reverse">
+                                                <RadioGroupItem value="saman" id="r8" />
+                                                <Label htmlFor="r8">بانک سامان محمدعماد اشرفی</Label>
                                             </div>                                                                                                                                  
                                         </RadioGroup>
                                     </div>
@@ -642,6 +680,36 @@ export default function InvoicePage() {
                                                 <span>شبا: <span className="font-mono">IR 8206-2000-0000-1021-4803-9000</span></span>
                                             </div>
                                         </div>
+                                    )}
+
+                                    {selectedBank === 'asam' && (
+                                        <div className="bg-gray-100 p-4 rounded-[15px] border border-gray-200 text-sm text-slate-700 print:bg-transparent print:border-none print:p-0">
+                                            <p className="font-bold">شماره حساب: شرکت آسام تهویه مشرق زمین - بانک صادرات</p>
+                                            <div className="flex gap-4 mt-1 flex-wrap">
+                                                <span>شبا: <span className="font-mono">IR530190000000115330568009</span></span>
+                                                <span>شماره حساب: <span className="font-mono font-bold tracking-wider">0115330568009</span></span>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {selectedBank === 'tavangar' && (
+                                        <div className="bg-gray-100 p-4 rounded-[15px] border border-gray-200 text-sm text-slate-700 print:bg-transparent print:border-none print:p-0">
+                                            <p className="font-bold">شماره حساب: شرکت توانگر تهویه مطبوع - بانک صادرات</p>
+                                            <div className="flex gap-4 mt-1 flex-wrap">
+                                                <span>شبا: <span className="font-mono">IR350190000000115948996004</span></span>
+                                                <span>شماره حساب: <span className="font-mono font-bold tracking-wider">0115948996004</span></span>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {selectedBank === 'saman' && (
+                                        <div className="bg-gray-100 p-4 rounded-[15px] border border-gray-200 text-sm text-slate-700 print:bg-transparent print:border-none print:p-0">
+                                            <p className="font-bold">شماره حساب: محمدعماد اشرفی - بانک سامان</p>
+                                            <div className="flex gap-4 mt-1 flex-wrap">
+                                                <span>کارت: <span className="font-mono font-bold tracking-wider">6219861465316163</span></span>
+                                                <span>شبا: <span className="font-mono">IR290560611828015151195101</span></span>
+                                            </div>
+                                        </div>
                                     )}                             
 
                                     {(selectedBank !== 'none') && (
@@ -657,7 +725,11 @@ export default function InvoicePage() {
 
                     {/* Footer ثابت */}
                     <div className="print-footer scale-[85%]">
-                    <img src="/footer.svg" className="mx-auto" />
+                    {(selectedHeader === "header1" || selectedHeader === "header2") ? (
+                        <img src="/footer-alborz.svg" className="mx-auto" />
+                    ) : (
+                        <img src="/footer-orient.svg" className="mx-auto" />
+                    )}
                     </div>
 
                 </Card>
